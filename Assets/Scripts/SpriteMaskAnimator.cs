@@ -25,7 +25,7 @@ namespace Frixu.BouncyHero.Scripts
             mask.enabled = true;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
