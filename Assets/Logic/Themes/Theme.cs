@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Frixu.BouncyHero.Themes
 {
+    /// <summary> A look and feel of the game, defined by colors and textures. </summary>
     public class Theme
     {
         /// <summary> Sprite used for the background. </summary>
