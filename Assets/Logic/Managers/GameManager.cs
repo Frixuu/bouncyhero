@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Frixu.BouncyHero.Themes;
+using Frixu.BouncyHero;
+using Unity.Entities;
 
-namespace Frixu.BouncyHero
+namespace Frixu.BouncyHero.Managers
 {
-    public static class GameManager
+    public class GameManager : ComponentSystem
     {
-        public static ThemeManager Themes { get; }
         private static bool gamePaused;
 
         public static bool Paused
@@ -27,8 +27,12 @@ namespace Frixu.BouncyHero
 
         static GameManager()
         {
-            Themes = new ThemeManager();
             Paused = true;
+        }
+
+        protected override void OnUpdate()
+        {
+            
         }
     }
 }

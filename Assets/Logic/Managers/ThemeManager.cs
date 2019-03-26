@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Entities;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Frixu.BouncyHero.Themes
+namespace Frixu.BouncyHero.Managers
 {
     /// <summary> Manages themes of the game. </summary>
-    public class ThemeManager
+    public class ThemeManager : ComponentSystem
     {
+        private void InternalUpdate() { }
+        protected override void OnUpdate()
+        {
+            
+        }
+
         /// <summary> Collection of all themes in the game. </summary>
         private List<Theme> AllThemes { get; set; }
         /// <summary> A theme that is currently in use. </summary>
@@ -40,7 +47,7 @@ namespace Frixu.BouncyHero.Themes
         }
 
         /// <summary> Chooses a new theme, different from the current one. </summary>
-        private void ChooseNewTheme()
+        public void ChooseNewTheme()
         {
             Theme newTheme;
             do { newTheme = GetRandomTheme(); } while (newTheme == CurrentTheme);

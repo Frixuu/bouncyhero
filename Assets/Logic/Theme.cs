@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Frixu.BouncyHero.Themes
+namespace Frixu.BouncyHero
 {
     /// <summary> A look and feel of the game, defined by colors and textures. </summary>
     public class Theme
