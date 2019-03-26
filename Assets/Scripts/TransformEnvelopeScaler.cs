@@ -1,38 +1,34 @@
 ﻿using System;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Jobs;
 
 namespace Frixu.BouncyHero.Scripts
 {
     [Serializable]
-    public struct TransformEnvelopeScaler : IComponentData
+    public struct TransformEnvelopeScalerComponent : IComponentData
     {
         public float Size;
         public float TargetAspectRatio;
     }
 
+    public class TransformEnvelopeScaler : ComponentDataProxy<TransformEnvelopeScalerComponent>
+    {
+
+    }
+
     public class TransformEnvelopeScaleSystem : ComponentSystem
     {
-        private struct Filter
-        {
-            public readonly int Length;
-            public ComponentDataArray<TransformEnvelopeScaler> scaleData;
-            public TransformAccessArray transforms;
-        }
-
-        [Inject] private Filter filter;
-
         protected override void OnUpdate()
         {
             var screenRatio = (float) Screen.width / (float) Screen.height;
-            for (var i = 0; i < filter.Length; i++)
+            Entities.WithAll<TransformEnvelopeScalerComponent, Transform>()
+                .ForEach((ref TransformEnvelopeScalerComponent data, Transform transform) =>
             {
-                var side = filter.scaleData[i].Size;
-                if (screenRatio < filter.scaleData[i].TargetAspectRatio)
-                    side *= filter.scaleData[i].TargetAspectRatio / screenRatio;
-                filter.transforms[i].localScale = new Vector3(side, side, 0);
-            }
+                var side = data.Size;
+                if (screenRatio < data.TargetAspectRatio)
+                    side *= data.TargetAspectRatio / screenRatio;
+                transform.localScale = new Vector3(side, side, 0);
+            });
         }
     }
 }
