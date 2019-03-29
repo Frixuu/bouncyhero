@@ -9,9 +9,9 @@ namespace Frixu.BouncyHero.Scripts
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Bootstrap()
         {
+            World.Active.GetOrCreateManager<GameManager>();
             World.Active.GetOrCreateManager<TimeManager>();
             World.Active.GetOrCreateManager<ThemeManager>();
-            World.Active.GetOrCreateManager<GameManager>();
             Debug.Log("The game has been successfully bootstrapped.");
         }
     }

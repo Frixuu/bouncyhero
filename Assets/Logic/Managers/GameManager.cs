@@ -10,9 +10,9 @@ namespace Frixu.BouncyHero.Managers
 {
     public class GameManager : ComponentSystem
     {
-        private static bool gamePaused;
+        private bool gamePaused;
 
-        public static bool Paused
+        public bool Paused
         {
             get => gamePaused;
             set
@@ -25,9 +25,9 @@ namespace Frixu.BouncyHero.Managers
 
         public static event EventHandler GamePaused, GameResumed;
 
-        static GameManager()
+        public GameManager()
         {
-            Paused = true;
+            //Paused = true;
         }
 
         protected override void OnUpdate()
