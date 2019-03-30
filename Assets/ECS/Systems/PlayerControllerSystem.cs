@@ -1,29 +1,10 @@
-﻿using System;
+﻿using System.Linq;
+using Frixu.BouncyHero.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Frixu.BouncyHero.Scripts
+namespace Frixu.BouncyHero.Systems
 {
-    /// <summary> Determines the horizontal movement of the player. </summary>
-    [Serializable]
-    public struct PlayerControllerComponent : IComponentData
-    {
-        /// <summary> How fast will the player move at full speed? </summary>
-        public float MaxSpeed;
-        /// <summary> How quickly will the player gain momentum? </summary>
-        public float Acceleration;
-        /// <summary> How fast will the player brake? </summary>
-        public float Decceleration;
-        /// <summary> Current speed of the player. </summary>
-        [HideInInspector] public float Velocity;
-    }
-
-    /// <summary>
-    /// Proxy object for hybrid ECS.
-    /// Determines the horizontal movement of the player.
-    /// </summary>
-    public class PlayerController : ComponentDataProxy<PlayerControllerComponent> { }
-
     /// <summary> A system for moving the player. </summary>
     public class PlayerControllerSystem : ComponentSystem
     {
@@ -32,14 +13,16 @@ namespace Frixu.BouncyHero.Scripts
             var deltaTime = Time.deltaTime;
             // Get inputs for both the touchscreen and the keyboard
             var dirKey = Input.GetKey(KeyCode.LeftArrow) ? MovementDirection.Left :
-                         Input.GetKey(KeyCode.RightArrow) ? MovementDirection.Right :
-                         MovementDirection.None;
-            var dirTouch = MovementDirection.None; //TODO Touch input
+                Input.GetKey(KeyCode.RightArrow) ? MovementDirection.Right :
+                MovementDirection.None;
+            var dirTouch = Input.touches.Length == 0 ? MovementDirection.None :
+                Input.touches.First().position.x / Screen.width < 0.5f ? MovementDirection.Left :
+                MovementDirection.Right;
             // Prefer the touchscreen, use keyboard if no touch detected
             var dir = dirTouch != MovementDirection.None ? dirTouch : dirKey;
 
-            Entities.WithAll<Transform, PlayerControllerComponent>()
-            .ForEach((Transform transform, ref PlayerControllerComponent player) =>
+            Entities.WithAll<Transform, PlayerController>()
+            .ForEach((Transform transform, ref PlayerController player) =>
             {
                 float targetVelocity, forceDelta;
 

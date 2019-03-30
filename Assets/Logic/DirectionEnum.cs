@@ -2,16 +2,16 @@
 {
     public enum MovementDirection
     {
-        Right,
+        None,
         Left,
-        None
+        Right
     }
 
     public enum BounceDirection
     {
+        None,
         Up,
-        Down,
-        None
+        Down
     }
 
 }
