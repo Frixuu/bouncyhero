@@ -1083,7 +1083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedData:
-    Speed: 20
+    MaxSpeed: 18
     Acceleration: 100
     Decceleration: 100
     Velocity: 0
