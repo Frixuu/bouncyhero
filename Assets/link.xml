@@ -1,0 +1,5 @@
+<linker>
+	<assembly fullname="ECS" preserve="all" />
+	<assembly fullname="Logic" preserve="all" />
+	<assembly fullname="Scripts" preserve="all" />
+</linker>

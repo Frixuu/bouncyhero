@@ -21,10 +21,12 @@ namespace Frixu.BouncyHero.Scripts
             World.Active.GetOrCreateManager<ThemeManager>();
             World.Active.GetOrCreateManager<PlayerDataManager>();
 
+            #if !UNITY_EDITOR
             await SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Additive);
             Debug.Log("The gameplay scene has been loaded.");
             await SceneManager.LoadSceneAsync("UserInterface", LoadSceneMode.Additive);
             Debug.Log("The UI scene has been loaded.");
+            #endif
 
             Debug.Log("The game has been successfully bootstrapped.");
         }
