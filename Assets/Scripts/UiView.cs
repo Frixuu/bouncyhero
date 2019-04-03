@@ -27,6 +27,8 @@ namespace Frixu.BouncyHero.Scripts
         protected override void OnUpdate()
         {
             var tm = World.Active.GetExistingManager<TimeManager>();
+            var pdm = World.Active.GetExistingManager<PlayerDataManager>();
+
             Entities.WithAll<UiViewComponent, TextMeshProUGUI>()
             .ForEach((ref UiViewComponent determiner, TextMeshProUGUI text) =>
             {
@@ -34,6 +36,11 @@ namespace Frixu.BouncyHero.Scripts
                 {
                     case UiViewComponent.ViewType.CurrentTime:
                         text.SetText(TimeManager.TimeFormatter(tm.CurrentTime));
+                        break;
+                    case UiViewComponent.ViewType.BestTime:
+                        var current = tm.CurrentTime;
+                        var saved = pdm.Data.BestTime;
+                        text.SetText(TimeManager.TimeFormatter(current > saved ? current : saved));
                         break;
                     default:
                         break;

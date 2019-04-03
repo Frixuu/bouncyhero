@@ -19,7 +19,7 @@ namespace Frixu.BouncyHero.Scripts
             World.Active.GetOrCreateManager<GameManager>();
             World.Active.GetOrCreateManager<TimeManager>();
             World.Active.GetOrCreateManager<ThemeManager>();
-            World.Active.GetOrCreateManager<PlayerDataManager>();
+            await World.Active.GetOrCreateManager<PlayerDataManager>().Load();
 
             #if !UNITY_EDITOR
             await SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Additive);

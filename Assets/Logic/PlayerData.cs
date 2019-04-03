@@ -1,16 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using UnityEngine;
 
 namespace Frixu.BouncyHero
 {
+    /// <summary> Contains information about the player's progress. </summary>
     [XmlRoot("SaveData")]
     public class PlayerData
     {
+        /// <summary> The longest time player survived. </summary>
         [XmlIgnore] public TimeSpan BestTime = TimeSpan.Zero;
         [XmlElement("BestTime")]
         public long BestTimeString
@@ -18,15 +18,15 @@ namespace Frixu.BouncyHero
             get => BestTime.Ticks;
             set => BestTime = TimeSpan.FromTicks(value);
         }
-        [XmlIgnore] public static string SavePath;
-        [XmlIgnore] public static XmlSerializer SaveDataSerializer;
+
+        private static readonly XmlSerializer SaveDataSerializer;
 
         static PlayerData()
         {
             SaveDataSerializer = new XmlSerializer(typeof(PlayerData));
-            SavePath = Path.Combine(Application.persistentDataPath, "bouncyherosave.xml");
         }
 
+        /// <summary> Convert this data object to string. </summary>
         public async Task<string> Serialize()
         {
             return await Task.Run(() =>
@@ -42,6 +42,7 @@ namespace Frixu.BouncyHero
             });
         }
 
+        /// <summary> Create new data object from a string. </summary>
         public static async Task<PlayerData> Deserialize(string s)
         {
             return await Task.Run(() =>
@@ -54,33 +55,6 @@ namespace Frixu.BouncyHero
                     }
                 }  
             });
-        }
-
-        public static async Task<PlayerData> Load()
-        {
-            try
-            {
-                using (var reader = File.OpenText(SavePath))
-                {
-                    var content = await reader.ReadToEndAsync();
-                    return await Deserialize(content);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                var p = new PlayerData();
-                await p.Save();
-                return p;
-            }
-            
-        }
-
-        public async Task Save()
-        {
-            using (var writer = new StreamWriter(SavePath, false))
-            {
-                await writer.WriteAsync(await Serialize());
-            }
         }
     }
 }
