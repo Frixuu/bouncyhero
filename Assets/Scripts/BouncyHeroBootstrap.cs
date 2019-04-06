@@ -17,6 +17,7 @@ namespace Frixu.BouncyHero.Scripts
             if (RunPreviously) return;
             RunPreviously = true;
             World.Active.GetOrCreateManager<GameManager>();
+            World.Active.GetOrCreateManager<LifeManager>();
             World.Active.GetOrCreateManager<TimeManager>();
             World.Active.GetOrCreateManager<ThemeManager>();
             await World.Active.GetOrCreateManager<PlayerDataManager>().Load();

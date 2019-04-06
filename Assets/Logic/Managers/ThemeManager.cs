@@ -10,7 +10,6 @@ namespace Frixu.BouncyHero.Managers
     /// <summary> Manages themes of the game. </summary>
     public class ThemeManager : ComponentSystem
     {
-        private void InternalUpdate() { }
         protected override void OnUpdate()
         {
             

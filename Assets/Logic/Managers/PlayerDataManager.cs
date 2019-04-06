@@ -21,6 +21,15 @@ namespace Frixu.BouncyHero.Managers
         public PlayerDataManager()
         {
             Data = new PlayerData();
+            World.Active.GetExistingManager<LifeManager>().Killed += async delegate
+            {
+                var time = World.Active.GetExistingManager<TimeManager>().CurrentTime;
+                if (time > Data.BestTime)
+                {
+                    Data.BestTime = time;
+                    await Save();
+                }
+            };
         }
 
         /// <summary> Loads saved player data from a file. </summary>
