@@ -13,8 +13,7 @@ namespace Frixu.BouncyHero.Systems
         protected override void OnUpdate()
         {
             var delta = Time.deltaTime;
-            Entities.WithAll<Transform, Bouncable>()
-            .ForEach((Transform transform, ref Bouncable bouncable) =>
+            Entities.ForEach((Transform transform, ref Bouncable bouncable) =>
             {
                 // Initialize the elements, if needed
                 if (bouncable.Velocity == 0f)

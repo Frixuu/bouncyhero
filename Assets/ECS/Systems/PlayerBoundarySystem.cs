@@ -29,12 +29,12 @@ namespace Frixu.BouncyHero.Systems
         /// <summary> Checks the player's position every frame. </summary>
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            var group = GetComponentGroup
+            var query = GetEntityQuery
             (
                 ComponentType.ReadWrite<Transform>(),
                 ComponentType.ReadOnly<PlayerController>()
             );
-            var transforms = group.GetTransformAccessArray();
+            var transforms = query.GetTransformAccessArray();
             return new PlayerTeleportJob().Schedule(transforms, inputDeps);
         }
     }

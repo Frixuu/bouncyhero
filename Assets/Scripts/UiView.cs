@@ -26,11 +26,10 @@ namespace Frixu.BouncyHero.Scripts
     {
         protected override void OnUpdate()
         {
-            var tm = World.Active.GetExistingManager<TimeManager>();
-            var pdm = World.Active.GetExistingManager<PlayerDataManager>();
+            var tm = World.Active.GetExistingSystem<TimeManager>();
+            var pdm = World.Active.GetExistingSystem<PlayerDataManager>();
 
-            Entities.WithAll<UiViewComponent, TextMeshProUGUI>()
-            .ForEach((ref UiViewComponent determiner, TextMeshProUGUI text) =>
+            Entities.ForEach((ref UiViewComponent determiner, TextMeshProUGUI text) =>
             {
                 switch (determiner.ViewMode)
                 {

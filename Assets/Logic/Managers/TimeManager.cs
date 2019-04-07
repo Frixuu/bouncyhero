@@ -17,8 +17,8 @@ namespace Frixu.BouncyHero.Managers
         protected override void OnUpdate()
         {
             var delta = Time.deltaTime;
-            if (World.Active.GetExistingManager<GameManager>().Paused) return;
-            if (!World.Active.GetExistingManager<LifeManager>().Alive) return;
+            if (World.Active.GetExistingSystem<GameManager>().Paused) return;
+            if (!World.Active.GetExistingSystem<LifeManager>().Alive) return;
 
             CurrentTime += TimeSpan.FromSeconds(delta);
         }

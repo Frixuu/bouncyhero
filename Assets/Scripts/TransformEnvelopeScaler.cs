@@ -21,8 +21,7 @@ namespace Frixu.BouncyHero.Scripts
         protected override void OnUpdate()
         {
             var screenRatio = (float) Screen.width / (float) Screen.height;
-            Entities.WithAll<TransformEnvelopeScalerComponent, Transform>()
-            .ForEach((ref TransformEnvelopeScalerComponent data, Transform transform) =>
+            Entities.ForEach((ref TransformEnvelopeScalerComponent data, Transform transform) =>
             {
                 var side = data.Size;
                 if (screenRatio < data.TargetAspectRatio)

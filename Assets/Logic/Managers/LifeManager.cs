@@ -26,7 +26,10 @@ namespace Frixu.BouncyHero.Managers
             Alive = true;
         }
 
-        public event EventHandler Killed, Respawned;
+        // Since systems cannot refer to other systems instances in the constructor
+        // and I want to subscribe to death/respawn events to do stuff,
+        // unfortunately those have to be static.
+        public static event EventHandler Killed, Respawned;
 
         protected override void OnUpdate()
         {

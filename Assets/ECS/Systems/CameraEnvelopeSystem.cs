@@ -11,8 +11,7 @@ namespace Frixu.BouncyHero.Systems
         {
             var screenRatio = (float)Screen.width / (float)Screen.height;
 
-            Entities.WithAll<OrthographicEnvelope, Camera>()
-            .ForEach((ref OrthographicEnvelope data, Camera camera) =>
+            Entities.ForEach((ref OrthographicEnvelope data, Camera camera) =>
             {
                 var envelopeRatio = data.Width / data.Height;
 

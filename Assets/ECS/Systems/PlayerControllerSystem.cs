@@ -21,8 +21,7 @@ namespace Frixu.BouncyHero.Systems
             // Prefer the touchscreen, use keyboard if no touch detected
             var dir = dirTouch != MovementDirection.None ? dirTouch : dirKey;
 
-            Entities.WithAll<Transform, PlayerController>()
-            .ForEach((Transform transform, ref PlayerController player) =>
+            Entities.ForEach((Transform transform, ref PlayerController player) =>
             {
                 float targetVelocity, forceDelta;
 

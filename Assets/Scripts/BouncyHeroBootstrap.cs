@@ -16,11 +16,11 @@ namespace Frixu.BouncyHero.Scripts
         {
             if (RunPreviously) return;
             RunPreviously = true;
-            World.Active.GetOrCreateManager<GameManager>();
-            World.Active.GetOrCreateManager<LifeManager>();
-            World.Active.GetOrCreateManager<TimeManager>();
-            World.Active.GetOrCreateManager<ThemeManager>();
-            await World.Active.GetOrCreateManager<PlayerDataManager>().Load();
+            World.Active.GetOrCreateSystem<GameManager>();
+            World.Active.GetOrCreateSystem<LifeManager>();
+            World.Active.GetOrCreateSystem<TimeManager>();
+            World.Active.GetOrCreateSystem<ThemeManager>();
+            await World.Active.GetOrCreateSystem<PlayerDataManager>().Load();
 
             #if !UNITY_EDITOR
             await SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Additive);
