@@ -21,7 +21,11 @@ namespace Frixu.BouncyHero.Managers
         public PlayerDataManager()
         {
             Data = new PlayerData();
-            LifeManager.Killed += async delegate
+        }
+
+        protected override void OnCreate()
+        {
+            World.Active.GetExistingSystem<LifeManager>().Killed += async delegate
             {
                 var time = World.Active.GetExistingSystem<TimeManager>().CurrentTime;
                 if (time > Data.BestTime)

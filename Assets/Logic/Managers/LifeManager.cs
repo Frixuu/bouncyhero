@@ -3,10 +3,12 @@ using Unity.Entities;
 
 namespace Frixu.BouncyHero.Managers
 {
+    /// <summary> Manages the life of the player. </summary>
     public class LifeManager : ComponentSystem
     {
         private bool isAlive;
 
+        /// <summary> Is the player alive? </summary>
         public bool Alive
         {
             get => isAlive;
@@ -26,10 +28,10 @@ namespace Frixu.BouncyHero.Managers
             Alive = true;
         }
 
-        // Since systems cannot refer to other systems instances in the constructor
-        // and I want to subscribe to death/respawn events to do stuff,
-        // unfortunately those have to be static.
-        public static event EventHandler Killed, Respawned;
+        /// <summary> An event raised whenever the player dies. </summary>
+        public event EventHandler Killed;
+        /// <summary> An event raised whenever the player gets respawned. </summary>
+        public event EventHandler Respawned;
 
         protected override void OnUpdate()
         {
