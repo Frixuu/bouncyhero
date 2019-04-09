@@ -14,7 +14,5 @@ namespace Frixu.BouncyHero.Components
         public float UpperLimit;
         /// <summary> Minimum Y of this object. </summary>
         public float LowerLimit;
-        /// <summary> Current speed of the object. </summary>
-        [HideInInspector] public float Velocity;
     }
 }

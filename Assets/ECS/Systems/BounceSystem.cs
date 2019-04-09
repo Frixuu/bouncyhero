@@ -1,6 +1,11 @@
 ﻿using Frixu.BouncyHero.Components;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.Jobs;
 
 namespace Frixu.BouncyHero.Systems
 {
@@ -8,41 +13,83 @@ namespace Frixu.BouncyHero.Systems
     /// Automatically moves certain components up and down,
     /// such as the player or collectibles.
     /// </summary>
-    public class BounceSystem : ComponentSystem
+    public class BounceSystem : JobComponentSystem
     {
-        protected override void OnUpdate()
+        private struct BounceChangeVelocityJob : IJobForEachWithEntity<Bouncable, Movable>
         {
-            var delta = Time.deltaTime;
-            Entities.ForEach((Transform transform, ref Bouncable bouncable) =>
+            [DeallocateOnJobCompletion, ReadOnly]
+            public NativeArray<Translation> transforms;
+
+            public void Execute(Entity e, int i, ref Bouncable bouncable, ref Movable movable)
             {
-                // Initialize the elements, if needed
-                if (bouncable.Velocity == 0f)
-                    bouncable.Velocity = bouncable.Speed;
+                var pos = transforms[i].Value;
 
-                // Change the element's position
-                transform.localPosition += new Vector3(0f, bouncable.Velocity * delta, 0f);
-
-                // Check if the element is out of bounds
-                var candidate = Mathf.Clamp
-                (
-                    transform.localPosition.y,
-                    bouncable.LowerLimit,
-                    bouncable.UpperLimit
-                );
-
-                if (transform.localPosition.y != candidate)
+                if (pos.y < bouncable.LowerLimit)
                 {
-                    // Invert the element's velocity
-                    bouncable.Velocity *= -1f;
-                    // Move the element back into boundaries
+                    movable.Velocity.y = bouncable.Speed;
+                }
+                else if (pos.y > bouncable.UpperLimit)
+                {
+                    movable.Velocity.y = -bouncable.Speed;
+                }
+            }
+        }
+
+        private struct BounceEnforceBoundsJob : IJobParallelForTransform
+        {
+            [DeallocateOnJobCompletion, ReadOnly]
+            public NativeArray<Bouncable> bouncables;
+
+            public void Execute(int i, TransformAccess transform)
+            {
+                if (transform.localPosition.y < bouncables[i].LowerLimit)
+                {
                     transform.localPosition = new Vector3
                     (
                         transform.localPosition.x,
-                        candidate,
+                        bouncables[i].LowerLimit,
                         transform.localPosition.z
                     );
                 }
-            });
+                else if (transform.localPosition.y > bouncables[i].UpperLimit)
+                {
+                    transform.localPosition = new Vector3
+                    (
+                        transform.localPosition.x,
+                        bouncables[i].UpperLimit,
+                        transform.localPosition.z
+                    );
+                }
+            }
+        }
+
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        {
+            var query = GetEntityQuery
+            (
+                ComponentType.ReadWrite<Transform>(),
+                ComponentType.ReadWrite<Movable>(),
+                ComponentType.ReadOnly<Bouncable>()
+            );
+
+            var bounces = query.ToComponentDataArray<Bouncable>(Allocator.TempJob);
+            var transforms = query.GetTransformAccessArray();
+            var array = new NativeArray<Translation>(transforms.length, Allocator.TempJob);
+
+            for (var i = 0; i < transforms.length; i++)
+            {
+                var pos = transforms[i].localPosition;
+                array[i] = new Translation
+                {
+                    Value = new float3(pos.x, pos.y, pos.z)
+                };
+            }
+
+            var job1 = new BounceChangeVelocityJob { transforms = array };
+            var job2 = new BounceEnforceBoundsJob { bouncables = bounces };
+
+            var handle1 = job1.Schedule(this, inputDeps);
+            return job2.Schedule(query.GetTransformAccessArray(), handle1);
         }
     }
 }

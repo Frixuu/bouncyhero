@@ -1,16 +1,51 @@
 ﻿using System.Linq;
 using Frixu.BouncyHero.Components;
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Frixu.BouncyHero.Systems
 {
     /// <summary> A system for moving the player. </summary>
-    public class PlayerControllerSystem : ComponentSystem
+    public class PlayerControllerSystem : JobComponentSystem
     {
-        protected override void OnUpdate()
+        private struct PlayerManageVelocityJob : IJobForEach<PlayerController, Movable>
         {
-            var deltaTime = Time.deltaTime;
+            public float delta;
+            public MovementDirection dir;
+
+            public void Execute(ref PlayerController controller, ref Movable movable)
+            {
+                float targetVelocity, forceDelta;
+
+                switch (dir)
+                {
+                    case MovementDirection.Left:
+                        targetVelocity = -controller.MaxSpeed;
+                        forceDelta = controller.Acceleration;
+                        break;
+                    case MovementDirection.Right:
+                        targetVelocity = controller.MaxSpeed;
+                        forceDelta = controller.Acceleration;
+                        break;
+                    default:
+                        targetVelocity = 0f;
+                        forceDelta = controller.Decceleration;
+                        break;
+                }
+
+                movable.Velocity.x = Mathf.MoveTowards
+                (
+                    movable.Velocity.x,
+                    targetVelocity,
+                    forceDelta * delta
+                );
+            }
+        }
+
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        {
             // Get inputs for both the touchscreen and the keyboard
             var dirKey = Input.GetKey(KeyCode.LeftArrow) ? MovementDirection.Left :
                 Input.GetKey(KeyCode.RightArrow) ? MovementDirection.Right :
@@ -21,35 +56,13 @@ namespace Frixu.BouncyHero.Systems
             // Prefer the touchscreen, use keyboard if no touch detected
             var dir = dirTouch != MovementDirection.None ? dirTouch : dirKey;
 
-            Entities.ForEach((Transform transform, ref PlayerController player) =>
+            var job = new PlayerManageVelocityJob
             {
-                float targetVelocity, forceDelta;
-
-                switch (dir)
-                {
-                    case MovementDirection.Left:
-                        targetVelocity = -player.MaxSpeed;
-                        forceDelta = player.Acceleration;
-                        break;
-                    case MovementDirection.Right:
-                        targetVelocity = player.MaxSpeed;
-                        forceDelta = player.Acceleration;
-                        break;
-                    default:
-                        targetVelocity = 0f;
-                        forceDelta = player.Decceleration;
-                        break;
-                }
-
-                player.Velocity = Mathf.MoveTowards
-                (
-                    player.Velocity,
-                    targetVelocity,
-                    forceDelta * deltaTime
-                );
-
-                transform.localPosition += new Vector3(player.Velocity * deltaTime, 0f, 0f);
-            });
+                delta = Time.deltaTime,
+                dir = dir
+            };
+                
+            return job.Schedule(this, inputDeps);
         }
     }
 }

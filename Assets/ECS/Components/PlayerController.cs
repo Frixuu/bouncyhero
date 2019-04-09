@@ -14,7 +14,5 @@ namespace Frixu.BouncyHero.Components
         public float Acceleration;
         /// <summary> How fast will the player brake? </summary>
         public float Decceleration;
-        /// <summary> Current speed of the player. </summary>
-        [HideInInspector] public float Velocity;
     }
 }

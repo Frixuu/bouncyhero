@@ -23,7 +23,8 @@ namespace Frixu.BouncyHero.Managers
             }
         }
 
-        public static event EventHandler GamePaused, GameResumed;
+        public event EventHandler GamePaused;
+        public event EventHandler GameResumed;
 
         public GameManager()
         {
