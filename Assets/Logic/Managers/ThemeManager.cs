@@ -30,14 +30,14 @@ namespace Frixu.BouncyHero.Managers
                 new Theme
                 {
                     Name = "Calm Lake",
-                    Background = Resources.Load<Sprite>("CalmLake"),
+                    Background = Resources.Load<Sprite>("Themes/CalmLake"),
                     ObstacleColor = new Color(0.84f, 0.75f, 0.59f, 1f),
                     BoundariesColor = new Color(0.07f, 0.1f, 0.15f, 1f)
                 },
                 new Theme
                 {
                     Name = "Industrial",
-                    Background = Resources.Load<Sprite>("Industrial"),
+                    Background = Resources.Load<Sprite>("Themes/Industrial"),
                     ObstacleColor = new Color(0.77f, 0.21f, 0.27f, 1f),
                     BoundariesColor = new Color(0.3f, 0.14f, 0.14f, 1f)
                 }
