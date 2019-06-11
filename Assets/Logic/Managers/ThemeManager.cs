@@ -42,7 +42,13 @@ namespace Frixu.BouncyHero.Managers
                     BoundariesColor = new Color(0.3f, 0.14f, 0.14f, 1f)
                 }
             };
+            
+        }
+
+        protected override void OnCreate()
+        {
             CurrentTheme = GetRandomTheme();
+            World.GetExistingSystem<LifeManager>().Killed += delegate { ChooseNewTheme(); };
         }
 
         /// <summary> Chooses a new theme, different from the current one. </summary>

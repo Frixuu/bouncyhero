@@ -14,6 +14,12 @@ namespace Frixu.BouncyHero.Managers
             CurrentTime = TimeSpan.Zero;
         }
 
+        protected override void OnCreate()
+        {
+            World.Active.GetExistingSystem<LifeManager>().Respawned
+                += delegate { CurrentTime = TimeSpan.Zero; };
+        }
+
         protected override void OnUpdate()
         {
             var delta = Time.deltaTime;

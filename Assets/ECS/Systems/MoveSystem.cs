@@ -1,4 +1,5 @@
 ﻿using Frixu.BouncyHero.Components;
+using Frixu.BouncyHero.Managers;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -29,6 +30,11 @@ namespace Frixu.BouncyHero.Systems
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
+            if (!World.Active.GetExistingSystem<LifeManager>().Alive)
+            {
+                return inputDeps;
+            }
+
             var query = GetEntityQuery
             (
                 ComponentType.ReadWrite<Transform>(),

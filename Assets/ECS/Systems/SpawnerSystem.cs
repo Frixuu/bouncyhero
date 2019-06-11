@@ -50,8 +50,12 @@ namespace Frixu.BouncyHero.Systems
                 Quaternion.identity,
                 GameObject.Find("Track Elements").GetComponent<Transform>()
             );
+
             obstacle.GetComponent<SpriteRenderer>().color =
                 World.Active.GetExistingSystem<ThemeManager>().CurrentTheme.ObstacleColor;
+
+            World.Active.GetExistingSystem<LifeManager>().Respawned
+                += delegate { Object.Destroy(obstacle); };
 
             Debug.Log("Spawned object!");
         }
@@ -59,6 +63,7 @@ namespace Frixu.BouncyHero.Systems
         protected override void OnUpdate()
         {
             if (World.Active.GetExistingSystem<GameManager>().Paused) return;
+            if (!World.Active.GetExistingSystem<LifeManager>().Alive) return;
 
             timeToSpawn -= Time.deltaTime;
 

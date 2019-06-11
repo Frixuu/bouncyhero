@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8107697707999717090}
   - component: {fileID: 5929985300062868533}
   - component: {fileID: 4451187259595265633}
-  - component: {fileID: 1606273353541032686}
   - component: {fileID: 3901219721238718203}
+  - component: {fileID: -2910959665339821770}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Untagged
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &4451187259595265633
 MonoBehaviour:
@@ -94,20 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf10cdea1344482e91a4f2b58506b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1606273353541032686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597153580243290523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0335d04c26132cf4daccd688200a10da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedData:
-    Velocity: 0
 --- !u!114 &3901219721238718203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +110,17 @@ MonoBehaviour:
     Velocity:
       x: 3
       y: 0
+--- !u!114 &-2910959665339821770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6597153580243290523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92cf9dfdebe822a4587297f2a4576049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedData:
+    Active: 1

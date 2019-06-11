@@ -1,4 +1,5 @@
 ﻿using Frixu.BouncyHero.Components;
+using Frixu.BouncyHero.Managers;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;

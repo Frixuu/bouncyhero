@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Frixu.BouncyHero.Managers
 {
@@ -36,6 +38,12 @@ namespace Frixu.BouncyHero.Managers
         protected override void OnUpdate()
         {
             
+        }
+
+        public IEnumerator RespawnAfterTime(TimeSpan time)
+        {
+            yield return new WaitForSeconds((float)time.TotalSeconds);
+            Alive = true;
         }
     }
 }

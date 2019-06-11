@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Frixu.BouncyHero.Managers;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -19,6 +21,14 @@ namespace Frixu.BouncyHero.Scripts
         {
             director = GetComponent<PlayableDirector>();
             audio = GetComponent<AudioSource>();
+
+            var lifeManager = World.Active.GetExistingSystem<LifeManager>();
+
+           lifeManager.Killed += delegate
+            {
+                director.Play();
+                StartCoroutine(lifeManager.RespawnAfterTime(TimeSpan.FromSeconds(2.5d)));
+            };
         }
 
         private void FixedUpdate()

@@ -1,5 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using Frixu.BouncyHero.Managers;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -16,20 +22,26 @@ namespace Frixu.BouncyHero.Scripts
         {
             mask = GetComponent<SpriteMask>();
             director = GetComponent<PlayableDirector>();
-            director.stopped += delegate { mask.enabled = false;  };
+            director.stopped += delegate { mask.enabled = false; };
+            World.Active.GetExistingSystem<LifeManager>().Killed += delegate
+            {
+                Play();
+            };
         }
 
-        public void Play()
+        private void Play()
         {
             director.Play();
             mask.enabled = true;
+            //World.Active.GetExistingSystem<LifeManager>().Alive = true;
         }
 
         private void FixedUpdate()
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                Play();
+                //Play();
+                World.Active.GetExistingSystem<LifeManager>().Alive = false;
             }
         }
     }
